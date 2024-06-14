@@ -1,17 +1,21 @@
 from datetime import timedelta
 
+from django.conf import settings
 from django.db import models
-
-from users.models import User
 
 NULLABLE = {'blank': True, 'null': True}
 
 
 class Habit(models.Model):
     PERIODICITY_LIST = [
-        ('D', 'Раз в день'),
-        ('W', 'Раз в неделю'),
-        ('M', 'Раз в месяц')
+        ('Monday', 'Понедельник'),
+        ('Tuesday', 'Вторник'),
+        ('Wednesday', 'Среда'),
+        ('Thursday', 'Четверг'),
+        ('Friday', 'Пятница'),
+        ('Saturday', 'Суббота'),
+        ('Sunday', 'Воскресенье'),
+        ('Everyday', 'Каждый день'),
     ]
     title = models.CharField(max_length=64, verbose_name='Название', help_text='Укажите название привычки')
     location = models.CharField(
@@ -28,15 +32,23 @@ class Habit(models.Model):
         verbose_name='Действие',
         help_text='Укажите что нужно делать',
     )
-    pleasant = models.BooleanField(
+    pleasant_habit = models.BooleanField(
         default=False,
         verbose_name='Приятная привычка',
         help_text='Привычка является приятной ?',
     )
+    related_habit = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        limit_choices_to={'pleasant_habit': True},
+        **NULLABLE,
+        verbose_name='Связанная привычка',
+        help_text='Свяжите полезную привычку с приятной',
+    )
     periodicity = models.CharField(
-        max_length=1,
+        max_length=10,
         choices=PERIODICITY_LIST,
-        default='D',
+        default='Everyday',
         verbose_name='Периодичность',
         help_text='Выберите периодичность выполнения',
     )
@@ -56,7 +68,7 @@ class Habit(models.Model):
         verbose_name='Опубликовать',
         help_text='Опубликовать привычку ?'
     )
-    owner = models.ForeignKey(User, on_delete=models.SET_NULL, **NULLABLE, verbose_name='Владелец')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='Владелец')
 
     def __str__(self):
         return self.title
