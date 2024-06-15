@@ -134,10 +134,17 @@ CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
 CELERY_CACHE_BACKEND = os.getenv('CELERY_CACHE_BACKEND')
 
-CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 CELERY_BEAT_SCHEDULE = {
-    "???": {
-        "task": "habit.tasks.???",
-        "schedule": timedelta(minutes=5),
+    'sending_reminders': {
+        'task': 'habit.tasks.sending_reminders',
+        'schedule': timedelta(seconds=10),
+    },
+    'check_sending': {
+        'task': 'habit.tasks.check_sending',
+        'schedule': timedelta(seconds=10),
     },
 }
+
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
+TELEGRAM_URL = 'https://api.telegram.org/bot'

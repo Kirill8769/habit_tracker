@@ -8,14 +8,21 @@ NULLABLE = {'blank': True, 'null': True}
 
 class Habit(models.Model):
     PERIODICITY_LIST = [
-        ('Monday', 'Понедельник'),
-        ('Tuesday', 'Вторник'),
-        ('Wednesday', 'Среда'),
-        ('Thursday', 'Четверг'),
-        ('Friday', 'Пятница'),
-        ('Saturday', 'Суббота'),
-        ('Sunday', 'Воскресенье'),
-        ('Everyday', 'Каждый день'),
+        ('0', 'Понедельник'),
+        ('1', 'Вторник'),
+        ('2', 'Среда'),
+        ('3', 'Четверг'),
+        ('4', 'Пятница'),
+        ('5', 'Суббота'),
+        ('6', 'Воскресенье'),
+        ('30', 'Каждый день'),
+    ]
+    REMINDER_TIME_LIST = [
+        ('60', 'За 1 час'),
+        ('30', 'За 30 минут'),
+        ('10', 'За 15 минут'),
+        ('5', 'За 5 минут'),
+        ('0', 'Не напоминать'),
     ]
     title = models.CharField(max_length=64, verbose_name='Название', help_text='Укажите название привычки')
     location = models.CharField(
@@ -48,7 +55,7 @@ class Habit(models.Model):
     periodicity = models.CharField(
         max_length=10,
         choices=PERIODICITY_LIST,
-        default='Everyday',
+        default='30',
         verbose_name='Периодичность',
         help_text='Выберите периодичность выполнения',
     )
@@ -63,6 +70,14 @@ class Habit(models.Model):
         verbose_name='Время на выполнение',
         help_text='Укажите время, в течение которого Вы будете выполнять привычку'
     )
+    reminder_time = models.CharField(
+        max_length=5,
+        choices=REMINDER_TIME_LIST,
+        default='10',
+        verbose_name='Напоминание',
+        help_text='Выберите время напоминания',
+    )
+    send_status = models.BooleanField(default=False, verbose_name='Статус отправки')
     is_public = models.BooleanField(
         default=False,
         verbose_name='Опубликовать',

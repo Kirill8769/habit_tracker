@@ -6,12 +6,12 @@ class User(AbstractUser):
     username = None
 
     email = models.EmailField(unique=True, verbose_name='Почта', help_text='Укажите почту')
-    tg_name = models.CharField(
-        max_length=128,
+    tg_chat_id = models.CharField(
+        max_length=64,
         blank=True,
         null=True,
-        verbose_name='Имя телеграм',
-        help_text='Укажите username телеграмм'
+        verbose_name='ID телеграм',
+        help_text='Укажите ID телеграм'
     )
 
     USERNAME_FIELD = 'email'
