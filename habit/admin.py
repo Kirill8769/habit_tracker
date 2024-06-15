@@ -8,10 +8,10 @@ class HabitAdmin(admin.ModelAdmin):
         'id',
         'title',
         'action_time',
-        'pleasant_habit',
+        'is_pleasant',
         'periodicity',
         'execution_time',
         'public',
         'owner',
     )
-    list_filter = ('pleasant_habit', 'periodicity', 'public', 'owner', )
+    list_filter = ('is_pleasant', 'periodicity', 'public', 'owner', )

@@ -32,7 +32,7 @@ class Habit(models.Model):
         verbose_name='Действие',
         help_text='Укажите что нужно делать',
     )
-    pleasant_habit = models.BooleanField(
+    is_pleasant = models.BooleanField(
         default=False,
         verbose_name='Приятная привычка',
         help_text='Привычка является приятной ?',
@@ -40,15 +40,15 @@ class Habit(models.Model):
     related_habit = models.ForeignKey(
         'self',
         on_delete=models.SET_NULL,
-        limit_choices_to={'pleasant_habit': True},
+        limit_choices_to={'is_pleasant': True},
         **NULLABLE,
         verbose_name='Связанная привычка',
         help_text='Свяжите полезную привычку с приятной',
     )
     periodicity = models.CharField(
-        max_length=10,
+        max_length=256,
         choices=PERIODICITY_LIST,
-        default='Everyday',
+        default=['Everyday', ],
         verbose_name='Периодичность',
         help_text='Выберите периодичность выполнения',
     )
@@ -58,8 +58,8 @@ class Habit(models.Model):
         verbose_name='Вознаграждение',
         help_text='Укажите чем вы хотите себя вознаградить за выполнение привычки',
     )
-    execution_time = models.TimeField(
-        default=timedelta(minutes=5),
+    execution_time = models.DurationField(
+        default=timedelta(minutes=2),
         verbose_name='Время на выполнение',
         help_text='Укажите время, в течение которого Вы будете выполнять привычку'
     )

@@ -38,6 +38,20 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-multiselectfield"
+version = "0.1.12"
+description = "Django multiple select field"
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-multiselectfield-0.1.12.tar.gz", hash = "sha256:d0a4c71568fb2332c71478ffac9f8708e01314a35cf923dfd7a191343452f9f9"},
+    {file = "django_multiselectfield-0.1.12-py3-none-any.whl", hash = "sha256:c270faa7f80588214c55f2d68cbddb2add525c2aa830c216b8a198de914eb470"},
+]
+
+[package.dependencies]
+django = ">=1.4"
+
+[[package]]
 name = "djangorestframework"
 version = "3.15.1"
 description = "Web APIs for Django, made easy."
@@ -290,4 +304,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "3.10.4"
-content-hash = "5a6c8357a80c8c2fd758e5f2df68e3e1a968a0f7001c49ad6af79b25cac3b2ee"
+content-hash = "5140458232a42705ed0c4f229b7f4d40aa76cfd25c82f86a7bd19451490fb30a"
