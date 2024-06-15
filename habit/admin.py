@@ -11,7 +11,7 @@ class HabitAdmin(admin.ModelAdmin):
         'is_pleasant',
         'periodicity',
         'execution_time',
-        'public',
+        'is_public',
         'owner',
     )
-    list_filter = ('is_pleasant', 'periodicity', 'public', 'owner', )
+    list_filter = ('is_pleasant', 'periodicity', 'is_public', 'owner', )

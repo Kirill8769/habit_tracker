@@ -27,14 +27,15 @@ class ExecutionActionValidator:
 
 
 class PeriodicityValidator:
+    """Проверяет что если выбран пункт - Каждый день, то другие дни указывать не нужно."""
 
     def __init__(self, periodicity):
         self.periodicity = periodicity
 
     def __call__(self, value):
         periodicity_list = dict(value).get(self.periodicity)
-        if len(periodicity_list) > 1 and 'Everyday' in periodicity_list:
-            raise ValidationError('При указании периода - каждый день, другие дни указывать не нужно.')
+        # if len(periodicity_list) > 1 and 'Everyday' in periodicity_list:
+        #     raise ValidationError('При указании периода - каждый день, другие дни указывать не нужно.')
 
 
 class RelatedAwardValidator:
@@ -53,7 +54,7 @@ class RelatedAwardValidator:
         if related_field and award_field:
             raise ValidationError('Нельзя одновременно указывать связанную полезную привычку и вознаграждение.')
         if related_field:
-            pleasant_habit_exists = Habit.objects.filter(pleasant_habit=True, pk=related_field.pk).exists()
+            pleasant_habit_exists = Habit.objects.filter(is_pleasant=True, pk=related_field.pk).exists()
             if not pleasant_habit_exists:
                 raise ValidationError(
                     'В связанные привычки могут попадать только привычки с признаком приятной привычки.'

@@ -46,9 +46,9 @@ class Habit(models.Model):
         help_text='Свяжите полезную привычку с приятной',
     )
     periodicity = models.CharField(
-        max_length=256,
+        max_length=10,
         choices=PERIODICITY_LIST,
-        default=['Everyday', ],
+        default='Everyday',
         verbose_name='Периодичность',
         help_text='Выберите периодичность выполнения',
     )
@@ -63,7 +63,7 @@ class Habit(models.Model):
         verbose_name='Время на выполнение',
         help_text='Укажите время, в течение которого Вы будете выполнять привычку'
     )
-    public = models.BooleanField(
+    is_public = models.BooleanField(
         default=False,
         verbose_name='Опубликовать',
         help_text='Опубликовать привычку ?'
