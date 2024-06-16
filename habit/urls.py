@@ -1,7 +1,7 @@
 from django.urls import path
 
-from habit.apps import HabitConfig
 from habit import views
+from habit.apps import HabitConfig
 
 app_name = HabitConfig.name
 

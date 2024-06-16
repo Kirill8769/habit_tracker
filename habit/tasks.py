@@ -1,5 +1,4 @@
 import asyncio
-
 from datetime import datetime, timedelta
 
 from celery import shared_task
@@ -46,7 +45,7 @@ def sending_reminders():
 
 @shared_task
 def check_sending():
-    """Проверяет было ли отправлено уведомление."""
+    """Проверяет было ли отправлено напоминание."""
 
     habits = Habit.objects.exclude(reminder_time='0').filter(send_status=True)
     for habit in habits:

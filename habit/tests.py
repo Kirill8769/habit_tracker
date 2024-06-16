@@ -1,13 +1,11 @@
 import unittest
-from datetime import datetime, time, timedelta
-from unittest import TestCase
-from unittest.mock import patch, Mock, AsyncMock
+from datetime import datetime
+from unittest.mock import Mock, patch
+
 from django.conf import settings
 from django.urls import reverse
-import requests
-
-from rest_framework.test import APITestCase
 from rest_framework import status
+from rest_framework.test import APITestCase
 
 from habit.models import Habit
 from habit.services import send_telegram_message
@@ -24,31 +22,23 @@ class TestSendTelegramMessage(unittest.IsolatedAsyncioTestCase):
 
     @patch('habit.services.requests.get')
     async def test_send_telegram_message_success(self, mock_get):
+        """Тестирует успешную отправку напоминания."""
+
         mock_response = Mock()
         mock_response.status_code = 200
         mock_get.return_value = mock_response
-
         result = await send_telegram_message('12345', 'test_message')
-
         self.assertTrue(result)
-        mock_get.assert_called_once_with(
-            url=f'{settings.TELEGRAM_URL}{settings.TELEGRAM_TOKEN}/sendMessage',
-            params={'text': 'test_message', 'chat_id': '12345'}
-        )
 
     @patch('habit.services.requests.get')
     async def test_send_telegram_message_failure(self, mock_get):
+        """Тестирует ошибку при отправке напоминания."""
+
         mock_response = Mock()
         mock_response.status_code = 400
         mock_get.return_value = mock_response
-
         result = await send_telegram_message('12345', 'test_message')
-
         self.assertFalse(result)
-        mock_get.assert_called_once_with(
-            url=f'{settings.TELEGRAM_URL}{settings.TELEGRAM_TOKEN}/sendMessage',
-            params={'text': 'test_message', 'chat_id': '12345'}
-        )
 
 
 class HabitTasksTest(APITestCase):

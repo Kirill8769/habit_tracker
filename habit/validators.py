@@ -33,7 +33,8 @@ class PeriodicityValidator:
         self.periodicity = periodicity
 
     def __call__(self, value):
-        periodicity_list = dict(value).get(self.periodicity)
+        pass
+        # periodicity_list = dict(value).get(self.periodicity)
         # if len(periodicity_list) > 1 and 'Everyday' in periodicity_list:
         #     raise ValidationError('При указании периода - каждый день, другие дни указывать не нужно.')
 
@@ -63,12 +64,12 @@ class RelatedAwardValidator:
 
 class PleasantHabitValidator:
     """Проверяет чтобы при отметке приятная привычка, не были выбраны вознаграждение и связанная приятная привычка."""
-    
+
     def __init__(self, is_pleasant, award, related):
         self.is_pleasant = is_pleasant
         self.award = award
         self.related = related
-    
+
     def __call__(self, values):
         pleasant_field = dict(values).get(self.is_pleasant)
         award_field = dict(values).get(self.award)
