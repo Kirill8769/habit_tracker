@@ -138,11 +138,11 @@ CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 CELERY_BEAT_SCHEDULE = {
     'sending_reminders': {
         'task': 'habit.tasks.sending_reminders',
-        'schedule': timedelta(seconds=10),
+        'schedule': timedelta(seconds=55),
     },
     'check_sending': {
         'task': 'habit.tasks.check_sending',
-        'schedule': timedelta(seconds=10),
+        'schedule': timedelta(seconds=50),
     },
 }
 
