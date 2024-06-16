@@ -3,9 +3,11 @@ from datetime import datetime, time, timedelta
 from unittest import TestCase
 from unittest.mock import patch, Mock, AsyncMock
 from django.conf import settings
+from django.urls import reverse
 import requests
 
 from rest_framework.test import APITestCase
+from rest_framework import status
 
 from habit.models import Habit
 from habit.services import send_telegram_message
@@ -94,11 +96,10 @@ class HabitTasksTest(APITestCase):
         mock_now = datetime(2024, 6, 16, 21, 53, 0)
         mock_datetime.now.return_value = mock_now
 
-        mock_sending_reminders.send_result.return_value = True
+        mock_sending_reminders.send_result.return_value = True  # Не срабатывает
         sending_reminders()
 
         self.habit_test.refresh_from_db()
-        print(2, self.habit_test.__dict__)
         self.assertFalse(self.habit_test.send_status)  # True
 
     @patch('habit.tasks.datetime')
@@ -120,3 +121,40 @@ class HabitTasksTest(APITestCase):
         check_sending()
         self.habit_test.refresh_from_db()
         self.assertFalse(self.habit_test.send_status)
+
+
+class ExecutionActionTests(APITestCase):
+
+    def setUp(self):
+        self.user = User.objects.create(email='testuser@mail.com')
+        self.client.force_authenticate(user=self.user)
+
+    def test_valid_pleasant_execution(self):
+        """Тестирует успешное создание приятной привычки."""
+
+        data = {
+            "title": "Test",
+            "location": "Mesto",
+            "action_time": "21:00:00",
+            "action": "Sleep",
+            "is_pleasant": True,
+            "execution_time": "00:01:00"
+        }
+        url = reverse('habits:habit_create')
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_invalid_pleasant_execution(self):
+        """Тестирует превышение времени выполнения при создании приятной привычки."""
+
+        data = {
+            "title": "Test",
+            "location": "Mesto",
+            "action_time": "21:00:00",
+            "action": "Sleep",
+            "is_pleasant": True,
+            "execution_time": "00:03:00"
+        }
+        url = reverse('habits:habit_create')
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
