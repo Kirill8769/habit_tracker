@@ -21,7 +21,11 @@ def sending_reminders():
             habit_day = int(habit.periodicity)
             if habit_day == 30 or habit_day == weekday:
                 habit_time = habit.action_time
-                habit_time_delta = timedelta(hours=habit_time.hour, minutes=habit_time.minute, seconds=habit_time.second)
+                habit_time_delta = timedelta(
+                    hours=habit_time.hour,
+                    minutes=habit_time.minute,
+                    seconds=habit_time.second
+                )
                 time_now_delta = timedelta(hours=time_now.hour, minutes=time_now.minute, seconds=time_now.second)
                 if time_now_delta > habit_time_delta:
                     continue
