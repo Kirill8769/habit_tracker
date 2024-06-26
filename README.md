@@ -11,7 +11,7 @@
 - Регулирование времени напоминаний о необходимости выполнения привычкек;
 - Просмотр опубликованных привычек других пользователей и возможность публиковать свои;
 
-## Установка и запуск
+## Установка и запуск без использования Docker
 
 ### Склонируйте репозиторий:
 
@@ -69,6 +69,29 @@ redis-server
 Запустите celery worker и celery beat:
 ```bash
 celery -A config worker --beat --scheduler django --loglevel=info
+```
+
+## Установка и запуск с использованием Docker
+
+### Внесите изменения в переменные окружения, опираясь на описанные в docker-compose сервисы
+- POSTGRES_HOST=db
+- CELERY_BROKER_URL=redis://redis:6379/0
+- CELERY_RESULT_BACKEND=redis://redis:6379/0
+- CELERY_CACHE_BACKEND=redis://redis:6379/0
+
+### Соберите образ
+```bash
+docker compose build
+```
+
+### Запустите собранный образ
+```bash
+docker compose up -d
+```
+
+Создайте суперпользователя
+```bash
+docker compose exec <id/name образа> python manage.py csu
 ```
 
 ## Лицензия
