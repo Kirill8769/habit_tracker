@@ -91,7 +91,7 @@ docker compose up -d
 
 Создайте суперпользователя
 ```bash
-docker exec -t <id образа> python manage.py csu
+docker compose exec <id/name образа> python manage.py csu
 ```
 
 ## Лицензия
